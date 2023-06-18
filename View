@@ -1,0 +1,71 @@
+import java.sql.Connection;
+import java.sql.ResultSet;
+import java.sql.SQLException;
+import java.sql.Statement;
+
+public class View {
+    private Connection connection;
+
+    public View(Connection connection) {
+        this.connection = connection;
+    }
+
+    public void mostrarAlunos() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Alunos");
+
+            while (resultSet.next()) {
+                int matricula = resultSet.getInt("matricula");
+                String nome = resultSet.getString("nome");
+
+                System.out.println("Aluno: " + nome + " (Matrícula: " + matricula + ")");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void mostrarTurmas() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Turmas");
+
+            while (resultSet.next()) {
+                int codigo = resultSet.getInt("codigo");
+                String sala = resultSet.getString("sala");
+                String horario = resultSet.getString("horario");
+
+                System.out.println("Turma " + codigo + ": Sala " + sala + ", Horário " + horario);
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void mostrarProfessores() {
+        try {
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Professores");
+
+            while (resultSet.next()) {
+                int id = resultSet.getInt("id");
+                String nome = resultSet.getString("nome");
+                String titulacao = resultSet.getString("titulacao");
+
+                System.out.println("Professor: " + nome + " (Titulação: " + titulacao + ")");
+            }
+
+            resultSet.close();
+            statement.close();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

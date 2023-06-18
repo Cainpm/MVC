@@ -1,0 +1,44 @@
+import java.sql.Connection;
+import java.sql.PreparedStatement;
+import java.sql.SQLException;
+import java.util.List;
+
+public class Controller {
+    private List<Aluno> alunos;
+    private List<Turma> turmas;
+    private List<Professor> professores;
+    private View view;
+    private Connection connection;
+
+    public Controller(List<Aluno> alunos, List<Turma> turmas, List<Professor> professores, View view) {
+        this.alunos = alunos;
+        this.turmas = turmas;
+        this.professores = professores;
+        this.view = view;
+        this.connection = ConexaoMySQL.conectarBD(); // Obter a conexão com o banco de dados
+    }
+
+    public void alocarProfessorNaTurma(Professor professor, Turma turma) {
+        
+        String query = "UPDATE Turmas SET professor_id = ? WHERE codigo = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, professor.getId());
+            statement.setInt(2, turma.getCodigo());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void alocarAlunoNaTurma(Aluno aluno, Turma turma) {
+        
+        String query = "UPDATE Alunos SET turma_codigo = ? WHERE matricula = ?";
+        try (PreparedStatement statement = connection.prepareStatement(query)) {
+            statement.setInt(1, turma.getCodigo());
+            statement.setInt(2, aluno.getMatricula());
+            statement.executeUpdate();
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
+    }
+}

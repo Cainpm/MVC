@@ -1,1 +1,47 @@
+import java.sql.Connection;
+import java.util.ArrayList;
+	import java.util.List;
+public class MainTeste {
+	
+	public static void main(String[] args) {
+        // Criar uma lista de alunos
+        List<Aluno> alunos = new ArrayList<>();
+        alunos.add(new Aluno("Thiago Silva", 1));
+        alunos.add(new Aluno("Maria Oliveira", 2));
+        alunos.add(new Aluno("Pedro Almeida", 3));
 
+        // Criar uma lista de turmas
+        List<Turma> turmas = new ArrayList<>();
+        turmas.add(new Turma(101, "Sala A", "Segunda-feira, 8h-10h"));
+        turmas.add(new Turma(102, "Sala B", "Terça-feira, 14h-16h"));
+        turmas.add(new Turma(103, "Sala C", "Quarta-feira, 10h-12h"));
+
+        // Criar uma lista de professores
+        List<Professor> professores = new ArrayList<>();
+        professores.add(new Professor("Mariana Campos", "Doutora"));
+        professores.add(new Professor("Carlos Pereira", "Mestre"));
+        professores.add(new Professor("Fernanda Costa", "Especialista"));
+
+        // Criar a instância da View, passando a conexão com o banco de dados
+        Connection connection = ConexaoMySQL.conectarBD();
+        View view = new View(connection);
+       // Criar a instância do Controller
+ 
+        Controller controller = new Controller(alunos, turmas, professores, view);
+
+        // Alocar professores nas turmas
+        controller.alocarProfessorNaTurma(professores.get(0), turmas.get(0));
+        controller.alocarProfessorNaTurma(professores.get(1), turmas.get(1));
+        controller.alocarProfessorNaTurma(professores.get(2), turmas.get(2));
+
+        // Alocar alunos nas turmas
+        controller.alocarAlunoNaTurma(alunos.get(0), turmas.get(0));
+        controller.alocarAlunoNaTurma(alunos.get(1), turmas.get(1));
+        controller.alocarAlunoNaTurma(alunos.get(2), turmas.get(2));
+
+        // Exibir as informações na View
+        view.mostrarAlunos();
+        view.mostrarTurmas();
+        view.mostrarProfessores();
+    }
+	}
